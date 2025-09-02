@@ -1101,8 +1101,6 @@ def admin_unpaid_bills():
     cursor.close()
     return render_template('admin-unpaid-bills.html', unpaid_bills=unpaid_bills)
 
-from flask import render_template
-
 # Handle 404 error
 @app.errorhandler(404)
 def page_not_found(e):
@@ -1111,4 +1109,5 @@ def page_not_found(e):
 
 # Run this file 
 if __name__ == "__main__":
+
     app.run(debug = True)
