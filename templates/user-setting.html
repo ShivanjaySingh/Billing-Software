@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>POS Settings</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f4f6f9;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .sidebar {
+      min-height: 100vh;
+      background: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%);
+      color: white;
+    }
+    .sidebar .nav-link {
+      color: white;
+      font-weight: 500;
+      margin: 8px 0;
+      border-radius: 8px;
+    }
+    .sidebar .nav-link.active, .sidebar .nav-link:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .card {
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .settings-header {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .form-control, .form-select {
+      border-radius: 10px;
+    }
+    .btn {
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-2 sidebar p-3">
+      <h3 class="text-center mb-4">POS Panel</h3>
+      <nav class="nav flex-column">
+        <a href="/user-dashboard" class="nav-link">Dashboard</a>
+        <a href="/invoice/create" class="nav-link">Create Bill</a>
+        <a href="/user-invoice-view" class="nav-link">View Invoice</a>
+        <a href="/user-product" class="nav-link">Products</a>
+        <a href="/user-customer" class="nav-link">Customers</a>
+        <a href="/user-sales" class="nav-link">Sales</a>
+        <a href="/user-report" class="nav-link">Reports</a>
+        <a href="/user-setting" class="nav-link active">Settings</a>
+        <a href="/user-logout" class="nav-link">Logout</a>
+      </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-10 p-4">
+      <div class="settings-header">⚙️ Settings</div>
+
+      <div class="row">
+        <!-- Profile Settings -->
+        <div class="col-md-6 mb-4">
+          <div class="card p-4">
+            <h5>👤 Profile Settings</h5>
+            <form action="/user-setting/{{ user.id }}" method="POST">
+              <div class="mb-3">
+                <label class="form-label">Name</label>
+                <input type="text" class="form-control" name="name" value="{{ user.name }}" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Email</label>
+                <input type="email" class="form-control" name="email" value="{{ user.email }}" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">New Password</label>
+                <input type="password" class="form-control" name="password" required>
+              </div>
+              <button type="submit" class="btn btn-primary w-100">Save Changes</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Password Settings -->
+        <div class="col-md-6 mb-4">
+          <div class="card p-4">
+            <h5>🔑 Change Password (Not in Use)</h5>
+            <form method="POST">
+              <div class="mb-3">
+                <label class="form-label">Current Password</label>
+                <input type="password" class="form-control" name="current_password" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">New Password</label>
+                <input type="password" class="form-control" name="new_password" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Confirm Password</label>
+                <input type="password" class="form-control" name="confirm_password" required>
+              </div>
+              <button type="submit" class="btn btn-warning w-100">Update Password</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <div class="row">
+        <!-- Preferences -->
+        <div class="col-md-6 mb-4">
+          <div class="card p-4">
+            <h5>⚡ Preferences (Not in Use)</h5>
+            <form method="POST">
+              <div class="mb-3">
+                <label class="form-label">Currency</label>
+                <select class="form-select" name="currency">
+                  <option value="INR">₹ INR</option>
+                  <option value="USD">$ USD</option>
+                  <option value="EUR">€ EUR</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Language</label>
+                <select class="form-select" name="language">
+                  <option value="en">English</option>
+                  <option value="hi">हिंदी</option>
+                  <option value="fr">Français</option>
+                </select>
+              </div>
+              <button type="submit" class="btn btn-success w-100">Save Preferences</button>
+            </form>
+          </div>
+        </div>
+
+        <!-- Notifications -->
+        <div class="col-md-6 mb-4">
+          <div class="card p-4">
+            <h5>🔔 Notifications (Not in Use)</h5>
+            <form method="POST">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="email_notify" checked>
+                <label class="form-check-label">Email Notifications</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="sms_notify">
+                <label class="form-check-label">SMS Notifications</label>
+              </div>
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" name="push_notify" checked>
+                <label class="form-check-label">Push Notifications</label>
+              </div>
+              <button type="submit" class="btn btn-info w-100 mt-3">Update Notifications</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+</body>
+</html>

@@ -1,0 +1,22 @@
+<table class="table table-bordered">
+  <tr>
+    <th>ID</th>
+    <th>Number</th>
+    <th>Customer</th>
+    <th>GST</th>
+    <th>Total</th>
+    <th>Status</th>
+    <th>Action</th>
+  </tr>
+  {% for inv in invoices %}
+  <tr>
+    <td>{{ inv.id }}</td>
+    <td>{{ inv.number }}</td>
+    <td>{{ inv.customer_name }}</td>
+    <td>{{ inv.total_gst }}</td>
+    <td>{{ inv.grand_total }}</td>
+    <td>{{ inv.status }}</td>
+    <td><a href="{{ url_for('view_invoice', invoice_id=inv.id) }}" class="btn btn-sm btn-info">View</a></td>
+  </tr>
+  {% endfor %}
+</table>

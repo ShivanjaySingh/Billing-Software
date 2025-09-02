@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Bill - POS</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <style>
+    body {
+      background-color: #f4f6f9;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+    .sidebar {
+      min-height: 100vh;
+      background: linear-gradient(180deg, #4facfe 0%, #00f2fe 100%);
+      color: white;
+    }
+    .sidebar .nav-link {
+      color: white;
+      font-weight: 500;
+      margin: 8px 0;
+      border-radius: 8px;
+    }
+    .sidebar .nav-link.active, .sidebar .nav-link:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+    .card {
+      border-radius: 15px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+    .dashboard-header {
+      font-size: 24px;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+    .table th, .table td {
+      vertical-align: middle;
+    }
+    .btn-rounded {
+      border-radius: 12px;
+      padding: 10px 20px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container-fluid">
+  <div class="row">
+    <!-- Sidebar -->
+    <div class="col-md-2 sidebar p-3">
+      <h3 class="text-center mb-4">POS Panel</h3>
+      <nav class="nav flex-column">
+        <a href="#" class="nav-link">Dashboard</a>
+        <a href="#" class="nav-link active">Create Bill</a>
+        <a href="#" class="nav-link">Products</a>
+        <a href="#" class="nav-link">Customers</a>
+        <a href="#" class="nav-link">Sales</a>
+        <a href="#" class="nav-link">Reports</a>
+        <a href="#" class="nav-link">Settings</a>
+        <a href="#" class="nav-link">Logout</a>
+      </nav>
+    </div>
+
+    <!-- Main Content -->
+    <div class="col-md-10 p-4">
+      <div class="dashboard-header">🧾 Create New Bill</div>
+
+      <!-- Billing Form -->
+      <div class="card p-4 mb-4">
+        <h5>Customer Details</h5>
+        <div class="row g-3 mt-2">
+          <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Customer Name">
+          </div>
+          <div class="col-md-4">
+            <input type="text" class="form-control" placeholder="Mobile Number">
+          </div>
+          <div class="col-md-4">
+            <input type="email" class="form-control" placeholder="Email">
+          </div>
+        </div>
+      </div>
+
+      <!-- Products Table -->
+      <div class="card p-4 mb-4">
+        <h5>Products</h5>
+        <table class="table table-bordered mt-3">
+          <thead class="table-light">
+            <tr>
+              <th>Product</th>
+              <th>Qty</th>
+              <th>Price (₹)</th>
+              <th>Total (₹)</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          <tbody id="productRows">
+            <tr>
+              <td><input type="text" class="form-control" placeholder="Enter Product"></td>
+              <td><input type="number" class="form-control" value="1"></td>
+              <td><input type="number" class="form-control" value="0"></td>
+              <td><input type="number" class="form-control" value="0" readonly></td>
+              <td><button class="btn btn-danger btn-sm">❌</button></td>
+            </tr>
+          </tbody>
+        </table>
+        <button class="btn btn-success btn-sm" onclick="addRow()">➕ Add Product</button>
+      </div>
+
+      <!-- Billing Summary -->
+      <div class="card p-4">
+        <div class="row">
+          <div class="col-md-6">
+            <h5>Payment Mode</h5>
+            <select class="form-select mt-2">
+              <option>Cash</option>
+              <option>Card</option>
+              <option>UPI</option>
+              <option>Net Banking</option>
+            </select>
+          </div>
+          <div class="col-md-6 text-end">
+            <h4>Total: ₹<span id="grandTotal">0</span></h4>
+            <button class="btn btn-primary btn-rounded mt-3">💾 Save & Print</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<script>
+  // Add new product row
+  function addRow() {
+    const row = `
+      <tr>
+        <td><input type="text" class="form-control" placeholder="Enter Product"></td>
+        <td><input type="number" class="form-control" value="1"></td>
+        <td><input type="number" class="form-control" value="0"></td>
+        <td><input type="number" class="form-control" value="0" readonly></td>
+        <td><button class="btn btn-danger btn-sm">❌</button></td>
+      </tr>`;
+    document.getElementById("productRows").insertAdjacentHTML("beforeend", row);
+  }
+</script>
+
+</body>
+</html>

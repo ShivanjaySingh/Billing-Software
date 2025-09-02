@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Create Bill - MyPOS</title>
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      background: #f8fafc;
+      font-family: 'Poppins', sans-serif;
+    }
+    .card-custom {
+      border-radius: 20px;
+      padding: 25px;
+      background: white;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.08);
+    }
+    .form-control, .form-select {
+      border-radius: 12px;
+      padding: 12px;
+    }
+    .btn-add {
+      background: #22c55e;
+      color: white;
+      border-radius: 12px;
+      padding: 8px 15px;
+    }
+    .btn-add:hover { background: #16a34a; }
+    .btn-save {
+      background: #2563eb;
+      color: white;
+      font-weight: 600;
+      border-radius: 12px;
+      padding: 12px 25px;
+      transition: 0.3s;
+    }
+    .btn-save:hover { background: #1e40af; }
+    .bill-summary {
+      border-top: 2px solid #e5e7eb;
+      padding-top: 15px;
+      margin-top: 15px;
+    }
+  </style>
+</head>
+<body>
+
+<div class="container py-5">
+  <div class="card-custom">
+    <h2 class="fw-bold text-center mb-4">
+      <i class="bi bi-receipt-cutoff me-2"></i> Create Bill
+    </h2>
+
+    <!-- Customer Details -->
+    <h5 class="mb-3 fw-bold"><i class="bi bi-person-lines-fill me-2"></i> Customer Details</h5>
+    <div class="row g-3 mb-4">
+      <div class="col-md-6">
+        <input type="text" class="form-control" placeholder="Customer Name">
+      </div>
+      <div class="col-md-6">
+        <input type="text" class="form-control" placeholder="Phone">
+      </div>
+      <div class="col-md-6">
+        <input type="email" class="form-control" placeholder="Email">
+      </div>
+      <div class="col-md-6">
+        <input type="text" class="form-control" placeholder="Address">
+      </div>
+    </div>
+
+    <!-- Bill Details -->
+    <h5 class="mb-3 fw-bold"><i class="bi bi-journal-text me-2"></i> Bill Details</h5>
+    <div class="row g-3 mb-4">
+      <div class="col-md-6">
+        <input type="text" class="form-control" placeholder="Bill No.">
+      </div>
+      <div class="col-md-6">
+        <input type="date" class="form-control">
+      </div>
+    </div>
+
+    <!-- Products Table -->
+    <h5 class="mb-3 fw-bold"><i class="bi bi-bag-check me-2"></i> Products</h5>
+    <table class="table table-bordered align-middle text-center">
+      <thead class="table-light">
+        <tr>
+          <th>Product</th>
+          <th>HSN/SAC</th>
+          <th>Qty</th>
+          <th>Unit Price (₹)</th>
+          <th>GST (%)</th>
+          <th>Total (₹)</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody id="product-body">
+        <tr>
+          <td><input type="text" class="form-control" placeholder="Product Name"></td>
+          <td><input type="text" class="form-control" placeholder="4901"></td>
+          <td><input type="number" class="form-control qty" value="1"></td>
+          <td><input type="number" class="form-control price" value="0"></td>
+          <td><input type="number" class="form-control gst" value="18"></td>
+          <td><input type="text" class="form-control total" value="0" readonly></td>
+          <td><button type="button" class="btn btn-danger btn-sm remove-row"><i class="bi bi-trash"></i></button></td>
+        </tr>
+      </tbody>
+    </table>
+    <div class="text-end mb-3">
+      <button type="button" id="add-row" class="btn btn-add"><i class="bi bi-plus-circle me-2"></i> Add Product</button>
+    </div>
+
+    <!-- Bill Summary -->
+    <div class="bill-summary">
+      <div class="d-flex justify-content-between">
+        <span class="fw-semibold">Subtotal:</span>
+        <span id="subtotal">₹0.00</span>
+      </div>
+      <div class="d-flex justify-content-between">
+        <span class="fw-semibold">Total GST:</span>
+        <span id="total-gst">₹0.00</span>
+      </div>
+      <div class="d-flex justify-content-between fs-5 fw-bold">
+        <span>Net Payable:</span>
+        <span id="net-total">₹0.00</span>
+      </div>
+    </div>
+
+    <!-- Buttons -->
+    <div class="text-center mt-4">
+      <button type="button" class="btn btn-save"><i class="bi bi-printer me-2"></i> Save & Print Bill</button>
+    </div>
+  </div>
+</div>
+
+<!-- Script -->
+<script>
+  function calculateRow(row) {
+    let qty = parseFloat(row.querySelector('.qty').value) || 0;
+    let price = parseFloat(row.querySelector('.price').value) || 0;
+    let gst = parseFloat(row.querySelector('.gst').value) || 0;
+
+    let subtotal = qty * price;
+    let gstAmount = subtotal * (gst / 100);
+    let total = subtotal + gstAmount;
+
+    row.querySelector('.total').value = total.toFixed(2);
+    calculateTotal();
+  }
+
+  function calculateTotal() {
+    let rows = document.querySelectorAll('#product-body tr');
+    let subtotal = 0, gstTotal = 0, netTotal = 0;
+
+    rows.forEach(row => {
+      let qty = parseFloat(row.querySelector('.qty').value) || 0;
+      let price = parseFloat(row.querySelector('.price').value) || 0;
+      let gst = parseFloat(row.querySelector('.gst').value) || 0;
+
+      let rowSubtotal = qty * price;
+      let rowGst = rowSubtotal * (gst / 100);
+      let rowTotal = rowSubtotal + rowGst;
+
+      subtotal += rowSubtotal;
+      gstTotal += rowGst;
+      netTotal += rowTotal;
+    });
+
+    document.getElementById('subtotal').innerText = "₹" + subtotal.toFixed(2);
+    document.getElementById('total-gst').innerText = "₹" + gstTotal.toFixed(2);
+    document.getElementById('net-total').innerText = "₹" + netTotal.toFixed(2);
+  }
+
+  // Add row
+  document.getElementById('add-row').addEventListener('click', function() {
+    let tbody = document.getElementById('product-body');
+    let newRow = tbody.rows[0].cloneNode(true);
+    newRow.querySelectorAll('input').forEach(input => input.value = "");
+    tbody.appendChild(newRow);
+  });
+
+  // Dynamic calculation
+  document.addEventListener('input', function(e) {
+    if (e.target.classList.contains('qty') || e.target.classList.contains('price') || e.target.classList.contains('gst')) {
+      calculateRow(e.target.closest('tr'));
+    }
+  });
+
+  // Remove row
+  document.addEventListener('click', function(e) {
+    if (e.target.closest('.remove-row')) {
+      e.target.closest('tr').remove();
+      calculateTotal();
+    }
+  });
+</script>
+
+</body>
+</html>

@@ -1,0 +1,68 @@
+{% extends 'base.html' %}
+
+{% block body %}
+
+  <!-- Hero Section -->
+  <section class="contact-hero">
+    <div>
+      <h1 class="display-5 fw-bold">Contact Us</h1>
+      <p class="lead">We’d love to hear from you!</p>
+    </div>
+  </section>
+
+  <!-- Contact Section -->
+  <section class="py-5">
+    <div class="container">
+      <div class="row g-5">
+        <!-- Contact Info -->
+        <div class="col-md-5">
+          <h2 class="fw-bold mb-4">Get in Touch</h2>
+          <p class="text-muted mb-4">Have questions about MyPOS? Fill out the form or reach us directly.</p>
+          <ul class="list-unstyled">
+            <li class="mb-3">
+              📍 <strong>Address:</strong> 123 Business Street, New Delhi, India
+            </li>
+            <li class="mb-3">
+              📞 <strong>Phone:</strong> +91 98765 43210
+            </li>
+            <li class="mb-3">
+              ✉️ <strong>Email:</strong> support@mypos.com
+            </li>
+          </ul>
+          <!-- Google Map -->
+          <div class="mt-4">
+            <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d224345.83924284955!2d77.06889985!3d28.52728035!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x390ce2b6f1d5a6db%3A0x7c0f0b5a6f0d5db1!2sNew%20Delhi!5e0!3m2!1sen!2sin!4v1685094055907!5m2!1sen!2sin"
+              width="100%" height="250" style="border:0; border-radius:12px;" allowfullscreen="" loading="lazy"></iframe>
+          </div>
+        </div>
+
+        <!-- Contact Form -->
+        <div class="col-md-7">
+          <div class="bg-white p-5 rounded-3 shadow-sm">
+            <h4 class="fw-bold mb-4">Send Us a Message</h4>
+            <form>
+              <div class="mb-3">
+                <label for="name" class="form-label fw-semibold">Name</label>
+                <input type="text" class="form-control" id="name" placeholder="Your full name" required>
+              </div>
+              <div class="mb-3">
+                <label for="email" class="form-label fw-semibold">Email</label>
+                <input type="email" class="form-control" id="email" placeholder="you@example.com" required>
+              </div>
+              <div class="mb-3">
+                <label for="subject" class="form-label fw-semibold">Subject</label>
+                <input type="text" class="form-control" id="subject" placeholder="Message subject" required>
+              </div>
+              <div class="mb-3">
+                <label for="message" class="form-label fw-semibold">Message</label>
+                <textarea class="form-control" id="message" rows="5" placeholder="Type your message..." required></textarea>
+              </div>
+              <button type="submit" class="btn btn-primary px-5 py-2">Send Message</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+{% endblock body %}

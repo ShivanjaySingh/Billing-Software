@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>About Us - MyPOS</title>
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body { font-family: 'Poppins', sans-serif; background: #f9fafb; }
+    .about-hero {
+      background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)),
+                  url('https://images.unsplash.com/photo-1521791136064-7986c2920216') no-repeat center/cover;
+      height: 50vh; display: flex; align-items: center; justify-content: center;
+      text-align: center; color: white;
+    }
+    .info-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+    .info-card:hover { transform: translateY(-8px); box-shadow: 0px 10px 20px rgba(0,0,0,0.1); }
+    .team-img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; }
+  </style>
+</head>
+<body>
+
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-dark bg-dark shadow-lg">
+    <div class="container">
+      <a class="navbar-brand fw-bold" href="/">MyPOS</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" 
+              data-bs-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" 
+              aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav">
+          <li class="nav-item"><a class="nav-link" href="/">Home</a></li>
+          <li class="nav-item"><a class="nav-link" href="/#features">Features</a></li>
+          <li class="nav-item"><a class="nav-link" href="/#pricing">Pricing</a></li>
+          <li class="nav-item"><a class="nav-link active" href="/about-us">About Us</a></li>
+          <li class="nav-item"><a class="nav-link" href="/contact">Contact</a></li>
+          <li class="nav-item"><a class="btn btn-primary ms-3 px-4" href="/login">Login</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero Section -->
+  <section class="about-hero">
+    <div>
+      <h1 class="display-4 fw-bold">About Us</h1>
+      <p class="lead">Get to know more about MyPOS and our journey</p>
+    </div>
+  </section>
+
+  <!-- Our Story -->
+  <section class="py-5">
+    <div class="container text-center">
+      <h2 class="fw-bold mb-4">Our Story</h2>
+      <p class="text-muted mb-0">
+        Founded with a mission to simplify business operations, MyPOS is a modern Point-of-Sale solution 
+        trusted by retailers, restaurants, and service providers. We started with a simple vision: 
+        to make sales and inventory management seamless, reliable, and data-driven for every business.
+      </p>
+    </div>
+  </section>
+
+  <!-- Mission & Vision -->
+  <section class="py-5 bg-light">
+    <div class="container text-center">
+      <h2 class="fw-bold mb-4">Our Mission & Vision</h2>
+      <div class="row g-4">
+        <div class="col-md-6">
+          <div class="info-card bg-white p-4 rounded-3 shadow-sm h-100">
+            <h5 class="fw-bold">🚀 Mission</h5>
+            <p>To empower businesses with technology that simplifies billing, inventory, and customer engagement while increasing efficiency and profitability.</p>
+          </div>
+        </div>
+        <div class="col-md-6">
+          <div class="info-card bg-white p-4 rounded-3 shadow-sm h-100">
+            <h5 class="fw-bold">🌍 Vision</h5>
+            <p>To become the world’s most trusted POS solution provider, helping millions of businesses thrive in the digital era.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Why Choose Us -->
+  <section class="py-5">
+    <div class="container text-center">
+      <h2 class="fw-bold mb-4">Why Choose MyPOS?</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="info-card bg-white p-4 rounded-3 shadow-sm h-100">
+            <h5 class="fw-bold">💡 Innovation</h5>
+            <p>We constantly innovate to bring you smarter, faster, and more reliable POS features.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="info-card bg-white p-4 rounded-3 shadow-sm h-100">
+            <h5 class="fw-bold">🔒 Security</h5>
+            <p>Your data is protected with advanced encryption and cloud backup systems.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="info-card bg-white p-4 rounded-3 shadow-sm h-100">
+            <h5 class="fw-bold">🤝 Support</h5>
+            <p>Our dedicated support team is available 24/7 to assist your business whenever you need it.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Our Team -->
+  <section class="py-5 bg-light">
+    <div class="container text-center">
+      <h2 class="fw-bold mb-4">Meet Our Team</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="bg-white p-4 rounded-3 shadow-sm h-100">
+            <img src="https://randomuser.me/api/portraits/men/32.jpg" class="team-img mb-3" alt="Team Member">
+            <h6 class="fw-bold">Amit Sharma</h6>
+            <p class="text-muted">Founder & CEO</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="bg-white p-4 rounded-3 shadow-sm h-100">
+            <img src="https://randomuser.me/api/portraits/women/44.jpg" class="team-img mb-3" alt="Team Member">
+            <h6 class="fw-bold">Priya Singh</h6>
+            <p class="text-muted">Head of Product</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="bg-white p-4 rounded-3 shadow-sm h-100">
+            <img src="https://randomuser.me/api/portraits/men/45.jpg" class="team-img mb-3" alt="Team Member">
+            <h6 class="fw-bold">Rahul Verma</h6>
+            <p class="text-muted">CTO</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Call to Action -->
+  <section class="py-5 text-center text-white" style="background: linear-gradient(135deg, #2563eb, #9333ea);">
+    <div class="container">
+      <h2 class="fw-bold mb-3">Ready to Simplify Your Business?</h2>
+      <p class="mb-4">Join thousands of businesses already using MyPOS to manage sales & growth.</p>
+      <a href="/register" class="btn btn-light px-5 py-2 fw-bold">Get Started</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="bg-dark text-white py-4">
+    <div class="container d-flex flex-column flex-md-row justify-content-between">
+      <p>&copy; 2025 MyPOS. All Rights Reserved.</p>
+      <div>
+        <a href="#" class="text-white me-3">Privacy</a>
+        <a href="#" class="text-white">Terms</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

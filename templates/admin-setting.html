@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Settings - MyPOS</title>
+  <!-- Bootstrap -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+  <!-- Tailwind -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Icons -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Poppins', sans-serif;
+      background: #f8fafc;
+    }
+    .sidebar {
+      background: #1e293b;
+      min-height: 100vh;
+      color: white;
+      position: fixed;
+      width: 240px;
+      padding-top: 20px;
+    }
+    .sidebar a {
+      color: #cbd5e1;
+      display: block;
+      padding: 12px 20px;
+      text-decoration: none;
+      transition: 0.3s;
+    }
+    .sidebar a:hover, .sidebar a.active {
+      background: #2563eb;
+      color: #fff;
+      border-radius: 8px;
+    }
+    .content {
+      margin-left: 240px;
+      padding: 20px;
+    }
+    .navbar-custom {
+      background: white;
+      padding: 12px 20px;
+      border-bottom: 1px solid #e5e7eb;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    .card-box {
+      border-radius: 15px;
+      box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+      background: #fff;
+      padding: 25px;
+      margin-bottom: 20px;
+    }
+    .btn-save {
+      background: #2563eb;
+      color: #fff;
+      font-weight: 600;
+      padding: 10px 25px;
+      border-radius: 8px;
+      border: none;
+    }
+    .btn-save:hover {
+      background: #1d4ed8;
+    }
+    .card {
+      border-radius: 16px;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+    }
+    .table thead {
+      background: #2563eb;
+      color: white;
+    }
+    .btn-action {
+      padding: 5px 10px;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Sidebar -->
+  <div class="sidebar">
+    <h3 class="text-center fw-bold mb-4">MyPOS Admin</h3>
+    <a href="/admin-dashboard"><i class="bi bi-speedometer2 me-2"></i> Dashboard</a>
+    <a href="/admin-sales"><i class="bi bi-cart me-2"></i> Sales</a>
+    <a href="/admin-invoice"><i class="bi bi-receipt me-2"></i> Invoices </a>
+    <a href="/admin-product"><i class="bi bi-box me-2"></i> Products</a>
+    <a href="/admin-customer"><i class="bi bi-people me-2"></i> Customers</a>
+    <a href="/admin-report"><i class="bi bi-bar-chart me-2"></i> Reports</a>
+    <a href="/admin-setting" class="active"><i class="bi bi-gear me-2"></i> Settings</a>
+    <a href="/admin-logout"><i class="bi bi-box-arrow-right me-2"></i> Logout</a>
+  </div>
+
+  <!-- Main Content -->
+  <div class="content">
+    
+    <!-- Navbar -->
+    <div class="navbar-custom">
+      <div>
+        <input type="text" class="form-control d-inline-block w-64" placeholder="Search...">
+      </div>
+      <div><h4><b>Hello,</b> {{ user.email }}</h4></div>
+      <div class="d-flex align-items-center gap-3">
+        <i class="bi bi-bell fs-5"></i>
+        <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" class="rounded-circle" width="40" height="40">
+      </div>
+    </div>
+
+    <!-- Settings Page -->
+    <h3 class="fw-bold mt-4 mb-4">⚙️ Settings</h3>
+
+    <!-- Add New Admin -->
+    <div class="card-box">
+      <!-- <h5 class="fw-bold mb-3">🏢 Company Information</h5> -->
+      <h5 class="fw-bold mb-3">Add Admin</h5>
+      <form action="/admin-setting" method="POST">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Name</label>
+          <input type="text" name="name" class="form-control" placeholder="Enter name">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Email Address</label>
+          <input type="email" name="email" class="form-control" placeholder="company@example.com">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-control" placeholder="Enter Password">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary w-100 fw-bold">Add Admin</button>
+    </form>
+    </div>
+
+    <!-- User Account -->
+    <div class="card-box">
+      <h5 class="fw-bold mb-3">👤 User Account Settings</h5>
+      <div class="row">
+        <form action="/admin-setting/{{user.id}}" method="POST">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Username</label>
+          <input type="text" class="form-control" name="editemail" placeholder="Enter username" value="{{user.email}}">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" class="form-control" name="editpassword" placeholder="Enter new password">
+        </div>
+        <button type="submit" class="btn btn-primary w-100 fw-bold">Update Credentials</button>
+          </form>
+      </div>
+    </div>
+
+    <!-- Tax & Billing -->
+    <div class="card-box">
+      <h5 class="fw-bold mb-3">💰 Tax & Billing (Not in Use Now)</h5>
+      <div class="row">
+        <div class="col-md-4 mb-3">
+          <label class="form-label">GST Number</label>
+          <input type="text" class="form-control" placeholder="Enter GST No.">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Default Tax (%)</label>
+          <input type="number" class="form-control" placeholder="18">
+        </div>
+        <div class="col-md-4 mb-3">
+          <label class="form-label">Currency</label>
+          <select class="form-select">
+            <option selected>INR (₹)</option>
+            <option>USD ($)</option>
+            <option>EUR (€)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Save Button -->
+    <div class="text-center mt-4">
+      <button class="btn-save">💾 Save Settings</button>
+    </div>
+
+    <br><br>
+    
+    <!-- Settings Page -->
+    <h3 class="fw-bold mt-4 mb-4">👤 Admin List</h3>
+    <!-- Table content -->
+    <div class="card p-3">
+      <div class="table-responsive">
+        <table class="table align-middle" id="productTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Password</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          
+          {% if admins|length == 0 %}
+          <div class="alert alert-info" role="alert">
+           The Admin table is empty, Add a New Admin Now!!!
+         </div>
+         {% else %}
+          <tbody>
+            <!-- Example rows -->
+             {% for admin in admins %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{ admin.name }}</td>
+              <td>{{ admin.email }}</td>
+              <td>{{ admin.role }}</td>
+              <td>{{ admin.password }}</td>
+              
+              <td>                 
+                  <a href="/admin-admin/{{ admin.id }}" class="btn btn-sm btn-success btn-action">
+                    <i class="bi bi-pencil-square"></i>
+                  </a>
+                <a type="button" href="/delete-admin/{{admin.id}}" class="btn btn-sm btn-danger btn-action"><i class="bi bi-trash"></i></a>
+              </td>
+            </tr>
+            {% endfor %}
+            {% endif %}
+            
+            <!-- Add more rows dynamically here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  
+
+    <br><br>
+
+    <!-- Add New Admin -->
+    <div class="card-box">
+      <!-- <h5 class="fw-bold mb-3">🏢 Company Information</h5> -->
+      <h5 class="fw-bold mb-3">Add POS Users</h5>
+      <form action="/admin-setting/add-user" method="POST">
+      <div class="row">
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Name</label>
+          <input type="text" name="name" class="form-control" placeholder="Enter name">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Email Address</label>
+          <input type="email" name="email" class="form-control" placeholder="company@example.com">
+        </div>
+        <div class="col-md-6 mb-3">
+          <label class="form-label">Password</label>
+          <input type="password" name="password" class="form-control" placeholder="Enter Password">
+        </div>
+      </div>
+      <button type="submit" class="btn btn-primary w-100 fw-bold">Add Admin</button>
+    </form>
+    </div>
+    
+    <!-- Settings Page -->
+    <h3 class="fw-bold mt-4 mb-4">👤 All User List</h3>
+    <!-- Table content -->
+    <div class="card p-3">
+      <div class="table-responsive">
+        <table class="table align-middle" id="productTable">
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Name</th>
+              <th>Email</th>
+              <th>Role</th>
+              <th>Password</th>
+              <th>Action</th>
+            </tr>
+          </thead>
+          
+          {% if pos_users|length == 0 %}
+          <div class="alert alert-info" role="alert">
+           The PoS User table is empty, Add a New User Now!!!
+         </div>
+         {% else %}
+          <tbody>
+            <!-- Example rows -->
+             {% for pos_user in pos_users %}
+            <tr>
+              <td>{{ loop.index }}</td>
+              <td>{{ pos_user.name }}</td>
+              <td>{{ pos_user.email }}</td>
+              <td>{{ pos_user.role }}</td>
+              <td>{{ pos_user.password }}</td>
+              
+               <td>                 
+                  <a href="/admin-setting/{{ pos_user.id }}" class="btn btn-sm btn-success btn-action">
+                    <i class="bi bi-pencil-square"></i>
+                  </a>
+                <a type="button" href="/delete-user/{{pos_user.id}}" class="btn btn-sm btn-danger btn-action"><i class="bi bi-trash"></i></a>
+              </td> 
+            </tr>
+            {% endfor %}
+            {% endif %}
+            
+            <!-- Add more rows dynamically here -->
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+
+  </div>
+
+ 
+
+</body>
+</html>

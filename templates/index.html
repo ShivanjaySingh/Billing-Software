@@ -1,0 +1,140 @@
+{% extends 'base.html' %}
+
+{% block body %}
+  <!-- Hero Section -->
+  <section class="hero">
+    <div>
+      <h1 class="display-4 fw-bold">Smart POS System</h1>
+      <p class="lead mb-4">Manage Sales, Inventory & Customers – All in One Place</p>
+      <a href="/admin-dashboard" class="btn btn-lg btn-primary px-5 me-3">Admin Panel</a>
+      <a href="/user-dashboard" class="btn btn-lg btn-outline-light px-5">Billing Panel</a>
+    </div>
+  </section>
+
+  <!-- About Section -->
+  <section id="about" class="py-5 bg-light">
+    <div class="container text-center">
+      <h2 class="fw-bold mb-4">About MyPOS</h2>
+      <p class="text-muted mb-0">
+        MyPOS is a modern Point-of-Sale system designed for businesses of all sizes. 
+        From retail shops to restaurants, our platform helps you track sales, manage inventory, 
+        and build customer relationships — all with real-time data and cloud backup.
+      </p>
+    </div>
+  </section>
+
+  <!-- Features Section -->
+  <section id="features" class="py-5">
+    <div class="container text-center">
+      <h2 class="fw-bold mb-4">Why Choose MyPOS?</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="feature-card bg-white p-4 rounded-3 shadow-sm h-100">
+            <h5 class="fw-bold">💳 Easy Billing</h5>
+            <p>Generate bills quickly with an intuitive interface and one-click checkout.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card bg-white p-4 rounded-3 shadow-sm h-100">
+            <h5 class="fw-bold">📦 Inventory Management</h5>
+            <p>Track stock in real-time and receive low stock alerts instantly.</p>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="feature-card bg-white p-4 rounded-3 shadow-sm h-100">
+            <h5 class="fw-bold">📊 Sales Reports</h5>
+            <p>Analyze detailed reports to boost efficiency and maximize profits.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How It Works Section -->
+  <section class="py-5 bg-light">
+    <div class="container text-center">
+      <h2 class="fw-bold mb-4">How It Works</h2>
+      <div class="row g-4">
+        <div class="col-md-3"><div class="p-3 bg-white shadow rounded-3">1️⃣ Sign up your business</div></div>
+        <div class="col-md-3"><div class="p-3 bg-white shadow rounded-3">2️⃣ Add products & inventory</div></div>
+        <div class="col-md-3"><div class="p-3 bg-white shadow rounded-3">3️⃣ Start selling with ease</div></div>
+        <div class="col-md-3"><div class="p-3 bg-white shadow rounded-3">4️⃣ Get reports & insights</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing Section -->
+  <section id="pricing" class="py-5">
+    <div class="container text-center">
+      <h2 class="fw-bold mb-4">Pricing Plans</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="pricing-card bg-white p-4 rounded-3 shadow-sm h-100">
+            <h4>Basic</h4>
+            <p class="display-6 fw-bold">$9/mo</p>
+            <p>✔ Single User<br>✔ Basic Reports<br>✔ Email Support</p>
+            <a href="#" class="btn btn-outline-primary">Choose Plan</a>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="pricing-card bg-white p-4 rounded-3 shadow-sm h-100 border border-primary">
+            <h4>Pro</h4>
+            <p class="display-6 fw-bold">$29/mo</p>
+            <p>✔ Multi-user<br>✔ Advanced Reports<br>✔ Priority Support</p>
+            <a href="#" class="btn btn-primary">Choose Plan</a>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="pricing-card bg-white p-4 rounded-3 shadow-sm h-100">
+            <h4>Enterprise</h4>
+            <p class="display-6 fw-bold">Custom</p>
+            <p>✔ Unlimited Users<br>✔ API Access<br>✔ Dedicated Manager</p>
+            <a href="#" class="btn btn-outline-primary">Contact Sales</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Testimonials -->
+  <section class="py-5 bg-light">
+    <div class="container text-center">
+      <h2 class="fw-bold mb-4">What Our Customers Say</h2>
+      <div class="row g-4">
+        <div class="col-md-4">
+          <div class="testimonial-card bg-white p-4 rounded-3 shadow-sm h-100">
+            <p>"MyPOS saved us hours of manual billing. It's fast and reliable!"</p>
+            <h6 class="fw-bold">– Ramesh, Retail Store Owner</h6>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="testimonial-card bg-white p-4 rounded-3 shadow-sm h-100">
+            <p>"The reports feature helped me increase my sales by 30%."</p>
+            <h6 class="fw-bold">– Anita, Restaurant Manager</h6>
+          </div>
+        </div>
+        <div class="col-md-4">
+          <div class="testimonial-card bg-white p-4 rounded-3 shadow-sm h-100">
+            <p>"I love the inventory alerts. No more stockouts in my shop!"</p>
+            <h6 class="fw-bold">– John, Pharmacy Owner</h6>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Recent Transactions (Dashboard Feel) -->
+  <section class="py-5">
+    <div class="container">
+      <h2 class="fw-bold text-center mb-4">Recent Transactions</h2>
+      <div class="row g-3 text-center">
+        <div class="col-md-3"><div class="p-4 bg-white shadow rounded-3">💵 $240 - Cash Sale</div></div>
+        <div class="col-md-3"><div class="p-4 bg-white shadow rounded-3">📱 $180 - Online Payment</div></div>
+        <div class="col-md-3"><div class="p-4 bg-white shadow rounded-3">🍔 $75 - Food Order</div></div>
+        <div class="col-md-3"><div class="p-4 bg-white shadow rounded-3">🛒 $120 - Retail Purchase</div></div>
+      </div>
+    </div>
+  </section>
+
+{% endblock body %}
+ 
