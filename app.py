@@ -1,6 +1,11 @@
-from flask import Flask, redirect, render_template, session, request, flash, url_for
+from flask import Flask, redirect, render_template, session, request, flash, url_for, jsonify, send_file, Response
 from flask_mysqldb import MySQL
 import MySQLdb.cursors
+import json
+from flask_mail import Mail, Message    #pip install Flask-Mail
+from io import BytesIO
+from datetime import datetime, date
+from decimal import Decimal
 import re
 
 app = Flask(__name__)
@@ -13,20 +18,67 @@ app.config['MYSQL_DB'] = "billing_software"
 app.secret_key = "your_seceret_key"
 
 mysql = MySQL(app)
+
+# Mail config (example: Gmail SMTP)
+app.config['MAIL_SERVER'] = 'smtp.gmail.com'
+app.config['MAIL_PORT'] = 587
+app.config['MAIL_USE_TLS'] = True
+app.config['MAIL_USERNAME'] = 'your_email@gmail.com'   # sender email
+app.config['MAIL_PASSWORD'] = 'your_app_password'      # Gmail app password
+app.config['MAIL_DEFAULT_SENDER'] = ('MyPOS Contact', 'your_email@gmail.com')
+
+mail = Mail(app)
+
 # Landing or index page
 @app.route('/')
 def index():
     return render_template('index.html')
 
 # Contact Page
-@app.route('/contact')
+@app.route('/contact', methods=['GET', 'POST'])
 def contact():
+    if (request.method=='POST'):
+        name = request.form['name']
+        email = request.form['email']
+        subject = request.form['subject']
+        message = request.form['message']
+
+        try:
+            msg = Message(
+                subject=f"New Contact Form: {subject}",
+                recipients=['receiver_email@example.com']  # where to send
+            )
+            msg.body = f"""
+            You have received a new message from {name} <{email}>.
+
+            Subject: {subject}
+
+            Message:
+            {message}
+            """
+            mail.send(msg)
+            flash("Your message has been sent successfully!", "success")
+        except Exception as e:
+            flash(f"Failed to send message. Error: {str(e)}", "danger")
+
+        return redirect(url_for('contact'))
+
     return render_template('contact.html')
 
 # About Us PAge
 @app.route('/about-us')
 def about_us():
     return render_template('about-us.html')
+
+# Privacy Policy Page
+@app.route('/privacy-policy')
+def privacy_policy():
+    return render_template('privacy-policy.html')
+
+# Terms& Condition Page
+@app.route('/terms&condition')
+def terms_condition():
+    return render_template('terms&condition.html')
 
 # User Login Page
 @app.route('/user-login', methods = ['GET', 'POST'])
@@ -324,6 +376,95 @@ def admin_report():
                            product_labels=product_labels,
                            product_values=product_values,
                            sales_data=sales_data)
+
+def default_serializer(obj):
+    """JSON serializer for objects not serializable by default"""
+    if isinstance(obj, (datetime, date)):
+        return obj.isoformat()  # Convert datetime/date → string
+    elif isinstance(obj, Decimal):
+        return float(obj)  # Convert Decimal → float
+    elif isinstance(obj, bytes):
+        return obj.decode("utf-8")  # Convert bytes → string
+    return str(obj)  # Fallback: convert anything else to string
+
+# Admin Report Download all Data 
+@app.route('/backup/download')
+def download_backup():
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+
+    tables = ["admin", "user", "customer", "product", "invoice", "invoice_item", "payment"]
+    backup_data = {}
+
+    for table in tables:
+        cursor.execute(f"SELECT * FROM {table}")
+        backup_data[table] = cursor.fetchall()
+
+    cursor.close()
+
+    json_data = json.dumps(backup_data, indent=4, default=default_serializer)
+
+    return Response(
+        json_data,
+        mimetype="application/json",
+        headers={"Content-Disposition": "attachment;filename=backup.json"}
+    )
+
+# Admin Report Upload All Backup Data
+@app.route('/backup/upload', methods=['POST'])
+def upload_backup():
+    try:
+        file = request.files['file']
+        if not file:
+            return "No file uploaded", 400
+
+        data = json.load(file)
+
+        cursor = mysql.connection.cursor()
+
+        # Restore admin
+        for a in data['admin']:
+            cursor.execute("INSERT INTO admin (id, name, email, password, role) VALUES (%s,%s,%s,%s,%s)",
+                        (a['id'], a['name'], a['email'], a['password'], a['role']))
+
+        # Restore product
+        for p in data['product']:
+            cursor.execute("INSERT INTO product (id, name, sku, hsn_sac, unit, gst_rate, unit_price, stock_qty, is_active) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                        (p['id'], p['name'], p['sku'], p['hsn_sac'], p['unit'], p['gst_rate'], p['unit_price'], p['stock_qty'], p['is_active']))
+
+        # Restore users
+        for u in data['user']:
+            cursor.execute("INSERT INTO user (id, name, email, password, role) VALUES (%s,%s,%s,%s,%s)",
+                        (u['id'], u['name'], u['email'], u['password'], u['role']))
+
+        # Restore customers
+        for c in data['customer']:
+            cursor.execute("INSERT INTO customer (id, name, phone, email, state, city) VALUES (%s,%s,%s,%s,%s,%s)",
+                        (c['id'], c['name'], c['phone'], c['email'], c['state'], c['city']))
+
+        # Restore invoice
+        for i in data['invoice']:
+            cursor.execute("INSERT INTO invoice (id, date, customer_id, place_of_supply, subtotal, discount_amount, cgst, sgst, igst, round_off, grand_total, status, user_id, discount, payable) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                        (i['id'], i['date'], i['customer_id'], i['place_of_supply'], i['subtotal'], i['discount_amount'], i['cgst'], i['sgst'], i['igst'], i['round_off'], i['grand_total'], i['status'], i['user_id'], i['discount'], i['payable']))
+
+        # Restore invoice_item
+        for i in data['invoice_item']:
+            cursor.execute("INSERT INTO invoice_item (id, invoice_id, product_id, description, qty, unit_price, discount_pct, gst_rate, line_subtotal, line_cgst, line_sgst, line_igst, line_total, created_at, updated_at) VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s)",
+                        (i['id'], i['invoice_id'], i['product_id'], i['description'], i['qty'], i['unit_price'], i['discount_pct'], i['gst_rate'], i['line_subtotal'], i['line_cgst'], i['line_sgst'], i['line_igst'], i['line_total'], i['created_at'], i['updated_at']))
+
+        # Restore payment
+        for i in data['payment']:
+            cursor.execute("INSERT INTO payment (id, invoice_id, amount, method, paid_at, created_at, updated_at ) VALUES (%s,%s,%s,%s,%s,%s,%s)",
+                        (i['id'], i['invoice_id'], i['amount'], i['method'], i['paid_at'], i['created_at'], i['updated_at']))
+
+        mysql.connection.commit()
+        cursor.close()
+    except:
+        return redirect('/data_exist')
+    return "Backup restored successfully!"
+
+@app.route('/data_exist')
+def uploaded_data_exists():
+    return render_template("uploaded_data_exists.html")
 
 # Admin Product Page
 @app.route('/admin-product', methods = ['GET', 'POST'])
@@ -642,6 +783,7 @@ def user_customer():
         ''',(name, phone, email, gender, gstin, address, country, state, city))
 
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    mysql.connection.commit()
     cursor.execute('Select * From customer')
     customers = cursor.fetchall()
     # mysql.connection.commit()
@@ -993,6 +1135,31 @@ def create_invoice():
     cursor.close()
     return render_template('create_invoice.html', customers=customers, products=products)
 
+# Search customer While creating Inovice
+@app.route("/search-customer")
+def search_customer():
+    term = request.args.get("term")
+    cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
+    cursor.execute(
+        "SELECT id, name, phone, state FROM customer WHERE name LIKE %s LIMIT 10", 
+        (f"%{term}%",)
+    )
+    results = cursor.fetchall()
+    cursor.close()
+
+    # Send state also
+    suggestions = [
+        {
+            "id": r["id"],
+            "label": f"{r['name']} ({r['phone']})",
+            "value": r["name"],
+            "state": r["state"],
+            "phone": r["phone"]
+        }
+        for r in results
+    ]
+    return jsonify(suggestions)
+
 # User Invoice View Page
 @app.route('/user-invoice-view')
 def user_invoice_view():
@@ -1013,7 +1180,7 @@ def user_invoice_view():
     return render_template('user-invoice-view.html', invoices=invoices)
 
 # -------------------------------
-#  View Invoice
+#  View Particular Invoice
 # -------------------------------
 @app.route('/invoice/<int:invoice_id>')
 def view_invoice(invoice_id):
@@ -1083,7 +1250,13 @@ def user_unpaid_bills():
         return redirect('/user-login')
     
     cursor = mysql.connection.cursor(MySQLdb.cursors.DictCursor)
-    cursor.execute("Select * From invoice where status!='paid'")
+    cursor.execute("""
+        SELECT i.*, c.name as customer_name 
+        FROM invoice i
+        LEFT JOIN customer c ON i.customer_id=c.id
+        where status!='paid'
+        ORDER BY i.id DESC
+    """)
     unpaid_bills = cursor.fetchall()
     cursor.close()
     return render_template('user-unpaid-bills.html', unpaid_bills=unpaid_bills)
@@ -1109,5 +1282,4 @@ def page_not_found(e):
 
 # Run this file 
 if __name__ == "__main__":
-
     app.run(debug = True)
